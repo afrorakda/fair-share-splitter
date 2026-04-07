@@ -79,7 +79,6 @@
         }
         .clear-btn.active { display: block; }
 
-        /* Result Cards */
         .results-wrapper {
             display: flex;
             flex-direction: column;
@@ -110,7 +109,6 @@
         }
         .copy-link:active { opacity: 0.7; transform: scale(0.95); }
 
-        /* 修正：通知の位置を地上（下部）へ */
         #toast {
             position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
             background: var(--main); color: #fff;
@@ -260,7 +258,8 @@
         calculated = { exact: "0.00", down: "0", gap: "0.00", up: "0", tip: "0.00" };
     }
 
-    async function copyScenario(type) {
+    // 修正：リンク化（URLエンコード）を防ぐテキストコピー
+    function copyScenario(type) {
         if (!totalInput.value || !peopleInput.value) return;
         
         let text = "";
@@ -268,11 +267,25 @@
         if (type === 'down') text = `Each: ${calculated.down} (I'll cover the ${calculated.gap} gap!)`;
         if (type === 'up') text = `Each: ${calculated.up} (${calculated.tip} extra for tip)`;
 
+        // 一時的なtextareaを使用して確実に「プレーンテキスト」としてコピー
+        const el = document.createElement('textarea');
+        el.value = text;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        el.setSelectionRange(0, 99999); // モバイル用
+        
         try {
-            await navigator.clipboard.writeText(text);
+            document.execCommand('copy');
             toast.style.opacity = '1';
             setTimeout(() => toast.style.opacity = '0', 1500);
-        } catch (err) {}
+        } catch (err) {
+            console.error('Copy failed', err);
+        }
+        
+        document.body.removeChild(el);
     }
 
     function updateClearBtns() {
