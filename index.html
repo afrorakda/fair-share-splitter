@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fair Share Splitter</title>
+    <title>Fair Splitter</title>
     
     <link rel="icon" href="image_94.png">
     <link rel="apple-touch-icon" href="image_94.png">
@@ -33,34 +33,34 @@
         .container {
             width: 100%;
             max-width: 420px;
-            padding: 40px 20px;
+            padding: 30px 15px; /* 上下余白を縮小 */
             box-sizing: border-box;
             text-align: center;
         }
 
-        h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
-        .subtitle { font-size: 1rem; color: var(--text-gray); font-weight: 600; margin-bottom: 30px; }
+        h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 5px; letter-spacing: -1px; } /* 少し小さく */
+        .subtitle { font-size: 0.9rem; color: var(--text-gray); font-weight: 600; margin-bottom: 20px; } /* 余白縮小 */
 
         .input-card {
             background: var(--input-bg);
-            padding: 25px;
+            padding: 18px; /* パディングを縮小 */
             border-radius: var(--radius);
             border: 2px solid var(--border);
-            margin-bottom: 30px;
+            margin-bottom: 20px; /* 余白縮小 */
             text-align: left;
         }
 
-        .input-group { margin-bottom: 20px; position: relative; }
+        .input-group { margin-bottom: 12px; position: relative; } /* 余白縮小 */
         .input-group:last-child { margin-bottom: 0; }
-        .input-label { font-size: 0.9rem; font-weight: 800; color: var(--main); margin-bottom: 8px; display: block; text-transform: uppercase; }
+        .input-label { font-size: 0.8rem; font-weight: 800; color: var(--main); margin-bottom: 6px; display: block; text-transform: uppercase; }
         
         input {
             width: 100%;
-            padding: 18px 15px;
+            padding: 15px 12px; /* パディング縮小 */
             border: 2px solid var(--accent);
-            border-radius: 12px;
+            border-radius: 10px; /* 角丸縮小 */
             background: #fff;
-            font-size: 1.5rem;
+            font-size: 1.3rem; /* 少し小さく */
             font-weight: 800;
             color: var(--main) !important;
             box-sizing: border-box;
@@ -72,40 +72,71 @@
         input::placeholder { color: #bbb; -webkit-text-fill-color: #bbb; }
 
         .clear-btn {
-            position: absolute; right: 10px; bottom: 12px;
+            position: absolute; right: 8px; bottom: 8px; /* 位置微調整 */
             background: none; border: none; color: #bbb;
-            font-size: 1.5rem; font-weight: 800; cursor: pointer;
+            font-size: 1.3rem; font-weight: 800; cursor: pointer;
             padding: 5px; display: none;
         }
         .clear-btn.active { display: block; }
 
-        /* Result Scenarios */
-        .results-wrapper { display: flex; flex-direction: column; gap: 12px; }
+        /* Results Scenario Grid */
+        .results-wrapper {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3並列に */
+            gap: 10px;
+            margin-bottom: 30px; /* ここだけ少し空ける */
+        }
+        
         .scenario-item {
             background: #fff;
             border: 2px solid var(--border);
-            padding: 20px;
+            padding: 15px; /* パディングをタイトに */
             border-radius: var(--radius);
             text-align: left;
-            transition: transform 0.1s;
+            position: relative; /* ボタン用 */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* 均等配置 */
         }
-        .scenario-tag { font-size: 0.75rem; font-weight: 900; text-transform: uppercase; color: var(--text-gray); margin-bottom: 5px; display: block; }
-        .scenario-val { font-size: 1.8rem; font-weight: 900; display: block; margin-bottom: 4px; }
-        .scenario-desc { font-size: 0.85rem; font-weight: 600; color: var(--text-gray); }
-        .highlight { color: #e74c3c; } /* Gap/Tip highlight */
+        
+        .scenario-tag { font-size: 0.65rem; font-weight: 900; text-transform: uppercase; color: var(--text-gray); margin-bottom: 4px; display: block; }
+        .scenario-val { font-size: 1.6rem; font-weight: 900; display: block; margin-bottom: 2px; } /* 少し小さく */
+        
+        /* 修正：文字を大きく、視認性アップ */
+        .scenario-desc { font-size: 0.85rem; font-weight: 700; color: var(--text-gray); line-height: 1.3; }
+        
+        /* 金額ハイライト */
+        .highlight { color: #e74c3c; font-weight: 900; }
 
-        footer { margin-top: 60px; font-size: 12px; color: #777; line-height: 1.8; font-weight: 500; }
+        /* Copy Button for each card */
+        .copy-icon {
+            position: absolute; right: 8px; top: 8px;
+            background: none; border: none; color: #bbb;
+            font-size: 1.2rem; cursor: pointer; padding: 5px;
+            transition: color 0.1s;
+        }
+        .copy-icon:active { color: var(--main); }
+
+        /* Toast */
+        #toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--main); color: #fff;
+            padding: 10px 20px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+            opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 1000;
+        }
+
+        footer { margin-top: auto; font-size: 11px; color: #777; line-height: 1.6; font-weight: 500; }
         footer a { color: inherit; text-decoration: underline; }
-        .footer-btns { margin-top: 30px; }
+        .footer-btns { margin-top: 20px; }
         .kofi-btn {
             display: inline-block; background: var(--main); color: #fff;
-            padding: 14px 28px; border-radius: var(--radius);
-            text-decoration: none; font-weight: bold; font-size: 15px; margin-bottom: 15px;
+            padding: 12px 24px; border-radius: var(--radius);
+            text-decoration: none; font-weight: bold; font-size: 14px; margin-bottom: 12px;
         }
         .home-btn {
-            display: block; width: 70%; margin: 0 auto; background: var(--accent);
-            color: var(--main); border: none; padding: 12px;
-            border-radius: var(--radius); font-weight: 800; font-size: 14px; cursor: pointer;
+            display: block; width: 60%; margin: 0 auto; background: var(--accent);
+            color: var(--main); border: none; padding: 10px;
+            border-radius: var(--radius); font-weight: 800; font-size: 13px; cursor: pointer;
         }
 
         #modal {
@@ -113,13 +144,15 @@
             background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 100;
         }
         .modal-content {
-            background: #fff; width: 85%; max-width: 340px; padding: 35px;
+            background: #fff; width: 85%; max-width: 340px; padding: 30px;
             border-radius: var(--radius); text-align: left; position: relative;
         }
-        .close-x { position: absolute; top: 15px; right: 20px; font-size: 24px; color: #888; cursor: pointer; }
+        .close-x { position: absolute; top: 12px; right: 18px; font-size: 22px; color: #888; cursor: pointer; }
     </style>
 </head>
 <body>
+
+<div id="toast">Copied!</div>
 
 <div class="container">
     <h1>Fair Split</h1>
@@ -140,19 +173,30 @@
 
     <div class="results-wrapper" id="results">
         <div class="scenario-item">
-            <span class="scenario-tag">Mathematical Exact</span>
-            <span class="scenario-val" id="val-exact">0.00</span>
+            <button class="copy-icon" onclick="copyScenario('exact')">📋</button>
+            <div>
+                <span class="scenario-tag">Mathematical Exact</span>
+                <span class="scenario-val" id="val-exact">0.00</span>
+            </div>
             <span class="scenario-desc">Fair share per person.</span>
         </div>
+        
         <div class="scenario-item">
-            <span class="scenario-tag">Round Down</span>
-            <span class="scenario-val" id="val-down">0</span>
-            <span class="scenario-desc" id="desc-down">Represent pays the gap.</span>
+            <button class="copy-icon" onclick="copyScenario('down')">📋</button>
+            <div>
+                <span class="scenario-tag">Round Down</span>
+                <span class="scenario-val" id="val-down">0</span>
+            </div>
+            <span class="scenario-desc" id="desc-down">Represent pays <span class="highlight">+0</span> gap.</span>
         </div>
+        
         <div class="scenario-item">
-            <span class="scenario-tag">Round Up</span>
-            <span class="scenario-val" id="val-up">0</span>
-            <span class="scenario-desc" id="desc-up">Extra goes to tip/change.</span>
+            <button class="copy-icon" onclick="copyScenario('up')">📋</button>
+            <div>
+                <span class="scenario-tag">Round Up</span>
+                <span class="scenario-val" id="val-up">0</span>
+            </div>
+            <span class="scenario-desc" id="desc-up"><span class="highlight">+0</span> extra for tip/change.</span>
         </div>
     </div>
 
@@ -182,6 +226,10 @@
     const peopleInput = document.getElementById('peopleCount');
     const clrTotal = document.getElementById('clr-total');
     const clrPeople = document.getElementById('clr-people');
+    const toast = document.getElementById('toast');
+
+    // Store calculated data for copy
+    let calculated = { exact: "0.00", down: "0", gap: "0.00", up: "0", tip: "0.00" };
 
     function calculate() {
         const total = parseFloat(totalInput.value.replace(/[^0-9.]/g, ''));
@@ -196,27 +244,49 @@
 
         // 1. Exact
         const exact = total / people;
-        document.getElementById('val-exact').innerText = exact.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        calculated.exact = exact.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById('val-exact').innerText = calculated.exact;
 
         // 2. Round Down (Integers)
         const down = Math.floor(exact);
         const gap = total - (down * people);
-        document.getElementById('val-down').innerText = down.toLocaleString();
-        document.getElementById('desc-down').innerHTML = `Represent pays <span class="highlight">+${gap.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span> gap.`;
+        calculated.down = down.toLocaleString();
+        calculated.gap = gap.toLocaleString(undefined, { maximumFractionDigits: 2 });
+        document.getElementById('val-down').innerText = calculated.down;
+        document.getElementById('desc-down').innerHTML = `Represent pays <span class="highlight">+${calculated.gap}</span> gap.`;
 
         // 3. Round Up (Integers)
         const up = Math.ceil(exact);
         const tip = (up * people) - total;
-        document.getElementById('val-up').innerText = up.toLocaleString();
-        document.getElementById('desc-up').innerHTML = `<span class="highlight">+${tip.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span> extra for tip/change.`;
+        calculated.up = up.toLocaleString();
+        calculated.tip = tip.toLocaleString(undefined, { maximumFractionDigits: 2 });
+        document.getElementById('val-up').innerText = calculated.up;
+        document.getElementById('desc-up').innerHTML = `<span class="highlight">+${calculated.tip}</span> extra for tip/change.`;
     }
 
     function resetResults() {
         document.getElementById('val-exact').innerText = '0.00';
         document.getElementById('val-down').innerText = '0';
         document.getElementById('val-up').innerText = '0';
-        document.getElementById('desc-down').innerText = 'Represent pays the gap.';
-        document.getElementById('desc-up').innerText = 'Extra goes to tip/change.';
+        document.getElementById('desc-down').innerHTML = `Represent pays <span class="highlight">+0</span> gap.`;
+        document.getElementById('desc-up').innerHTML = `<span class="highlight">+0</span> extra for tip/change.`;
+        calculated = { exact: "0.00", down: "0", gap: "0.00", up: "0", tip: "0.00" };
+    }
+
+    // Copy Function for Chat
+    async function copyScenario(type) {
+        if (!totalInput.value || !peopleInput.value) return;
+        
+        let text = "";
+        if (type === 'exact') text = `Each: ${calculated.exact} (Fair Split)`;
+        if (type === 'down') text = `Each: ${calculated.down} (I'll cover the ${calculated.gap} gap!)`;
+        if (type === 'up') text = `Each: ${calculated.up} (${calculated.tip} extra for tip/change)`;
+
+        try {
+            await navigator.clipboard.writeText(text);
+            toast.style.opacity = '1';
+            setTimeout(() => toast.style.opacity = '0', 1500);
+        } catch (err) {}
     }
 
     function updateClearBtns() {
