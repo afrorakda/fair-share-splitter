@@ -79,7 +79,7 @@
         }
         .clear-btn.active { display: block; }
 
-        /* Vertical Result Cards */
+        /* Result Cards */
         .results-wrapper {
             display: flex;
             flex-direction: column;
@@ -101,22 +101,22 @@
         
         .highlight { color: #e74c3c; font-weight: 900; }
 
-        /* Simple Text Copy Link */
         .copy-link {
             position: absolute; right: 20px; bottom: 20px;
             background: var(--main); color: #fff;
-            border: none; padding: 6px 12px; border-radius: 8px;
-            font-size: 0.75rem; font-weight: 800; cursor: pointer;
+            border: none; padding: 6px 14px; border-radius: 8px;
+            font-size: 0.8rem; font-weight: 800; cursor: pointer;
             text-transform: uppercase;
         }
         .copy-link:active { opacity: 0.7; transform: scale(0.95); }
 
-        /* Toast */
+        /* 修正：通知の位置を地上（下部）へ */
         #toast {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
             background: var(--main); color: #fff;
             padding: 12px 24px; border-radius: 20px; font-size: 0.9rem; font-weight: 700;
             opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         footer { margin-top: 60px; font-size: 12px; color: #777; line-height: 1.8; font-weight: 500; }
@@ -170,7 +170,7 @@
             <button class="copy-link" onclick="copyScenario('exact')">Copy</button>
             <span class="scenario-tag">Mathematical Exact</span>
             <span class="scenario-val" id="val-exact">0.00</span>
-            <span class="scenario-desc">Fair share per person. No adjustment.</span>
+            <span class="scenario-desc">Exact share per person. No rounding.</span>
         </div>
         
         <div class="scenario-item">
@@ -232,12 +232,10 @@
             return;
         }
 
-        // 1. Exact
         const exact = total / people;
         calculated.exact = exact.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         document.getElementById('val-exact').innerText = calculated.exact;
 
-        // 2. Round Down
         const down = Math.floor(exact);
         const gap = total - (down * people);
         calculated.down = down.toLocaleString();
@@ -245,7 +243,6 @@
         document.getElementById('val-down').innerText = calculated.down;
         document.getElementById('desc-down').innerHTML = `Represent pays <span class="highlight">+${calculated.gap}</span> gap.`;
 
-        // 3. Round Up
         const up = Math.ceil(exact);
         const tip = (up * people) - total;
         calculated.up = up.toLocaleString();
